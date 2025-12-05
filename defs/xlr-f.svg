@@ -1,0 +1,10 @@
+<svg id="xlr-f" xmlns="http://www.w3.org/2000/svg" viewBox="-120 -120 240 240">
+    <circle r="114"
+            stroke="black"
+            stroke-width="12"
+            fill="black"/>
+
+    <circle r="24" cx="-60" fill="white"/>
+    <circle r="24" cx="60" fill="white"/>
+    <circle r="24" cy="60" fill="white"/>
+</svg>

@@ -1,0 +1,11 @@
+<svg id="shuko-f" xmlns="http://www.w3.org/2000/svg" viewBox="-120 -120 240 240">
+    <circle r="114"
+            stroke="black"
+            stroke-width="12"
+            fill="white"/>
+
+    <rect x="-15" y="-115" width="30" height="30"/>
+    <rect x="-15" y="85" width="30" height="30"/>
+    <circle r="30" cx="-55"/>
+    <circle r="30" cx="55"/>
+</svg>

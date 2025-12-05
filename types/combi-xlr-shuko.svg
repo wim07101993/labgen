@@ -1,0 +1,21 @@
+<g>
+    <text id="type" y="-10" font-size="36px">
+        Combi balanced
+    </text>
+
+    <text id="max-power" transform="translate(0, 15)" font-size="24">
+        max 250V 16A
+    </text>
+
+    <g transform="translate(0, 25)">
+        <use href="#xlr-m" height="30" width="30" x="7"/>
+        <path d="M36,15 h20 v35 h-17" fill="none" stroke="black" stroke-width="3"/>
+        <use href="#shuko-m" height="30" width="35" x="-40" y="35" transform="scale(-1, 1)"/>
+
+        <line x1="55" y1="32" x2="121" y2="32" stroke="black" stroke-width="3"/>
+
+        <use href="#xlr-f" height="30" width="30" x="140"/>
+        <path d="M141,15 h-20 v35 h20" fill="none" stroke="black" stroke-width="3"/>
+        <use href="#shuko-f" height="30" width="30" x="140" y="35"/>
+    </g>
+</g>

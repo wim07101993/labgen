@@ -1,0 +1,15 @@
+<g>
+    <text id="type" y="10" font-size="36px">
+        Unbalanced
+    </text>
+
+    <g transform="translate(0, 55)">
+        <g transform="translate(0, 7.5)">
+            <use href="#jack" height="60" width="15" transform="rotate(-90)"/>
+        </g>
+        <line x1="50" x2="130" stroke="black" stroke-width="3"/>
+        <g transform="translate(180, -7.5)">
+            <use href="#jack" height="60" width="15" transform="rotate(90)"/>
+        </g>
+    </g>
+</g>

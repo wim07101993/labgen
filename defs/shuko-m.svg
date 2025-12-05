@@ -1,0 +1,5 @@
+<svg id="shuko-m" xmlns="http://www.w3.org/2000/svg" viewBox="0 -80 230 160">
+    <rect x="5" y="-75" width="120" height="150" fill="black" stroke-width="10" stroke="black"/>
+    <rect x="125" y="-40" width="100" height="20" fill="white" stroke-width="10" stroke="black"/>
+    <rect x="125" y="20" width="100" height="20" fill="white" stroke-width="10" stroke="black"/>
+</svg>
