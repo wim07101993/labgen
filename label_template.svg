@@ -17,11 +17,10 @@
     </g>
 
     <text id="length"
-          y="300"
+          y="320"
           x="580"
           fill="$FOREGROUND"
           text-anchor="end"
-          alignment-baseline="central"
           font-weight="700"
           font-size="80">
         $LENGTH

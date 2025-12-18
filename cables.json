@@ -1,0 +1,20 @@
+[
+  {
+    "isBalanced": true,
+    "length": 1.5,
+    "connectorsSideA": [
+      {
+        "name": "xlr",
+        "poleCount": 3,
+        "isMale": true
+      }
+    ],
+    "connectorsSideB": [
+      {
+        "name": "xlr",
+        "poleCount": 3,
+        "isMale": false
+      }
+    ]
+  }
+]
