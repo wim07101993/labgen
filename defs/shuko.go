@@ -6,22 +6,22 @@ var ShukoF = &svg.Svg{
 	NameSpace: svg.Namespace,
 	Id:        "shuko-f",
 	ViewBox: &svg.ViewBox{
-		MinX:   -60,
-		MinY:   -60,
-		Width:  120,
-		Height: 120,
+		MinX:   -21,
+		MinY:   -21,
+		Width:  42,
+		Height: 42,
 	},
 	Children: []any{
 		&svg.Circle{
-			Radius:      114,
+			Radius:      20,
 			Stroke:      svg.Black.Ptr(),
-			StrokeWidth: 12,
+			StrokeWidth: 2,
 			Fill:        svg.White.Ptr(),
 		},
-		&svg.Rect{X: -15, Y: -115, Width: 30, Height: 30},
-		&svg.Rect{X: -15, Y: 85, Width: 30, Height: 30},
-		svg.Circle{Radius: 30, CenterX: -55},
-		svg.Circle{Radius: 30, CenterX: 55},
+		&svg.Rect{X: -2.5, Y: -20, Width: 5, Height: 5},
+		&svg.Rect{X: -2.5, Y: 15, Width: 5, Height: 5},
+		svg.Circle{Radius: 5.5, CenterX: -9.5},
+		svg.Circle{Radius: 5.5, CenterX: 9.5},
 	},
 }
 

@@ -1,48 +1,80 @@
-<svg id="diagram" xmlns="http://www.w3.org/2000/svg" viewBox="-90.000000 -15.000000 180.000000 30.000000">
-  <line x1="-45" x2="45" stroke="#000000" stroke-width="4"></line>
-  <line x1="-45" x2="-45" y1="15" y2="-15" stroke="#000000" stroke-width="4"></line>
-  <line x1="45" x2="45" y1="15" y2="-15" stroke="#000000" stroke-width="4"></line>
-  <g transform="translate(-60.000000)">
-    <line x1="-15" x2="15" stroke="#0000ff" stroke-width="4"></line>
-    <line x1="-15" x2="15" y1="30" y2="30" stroke="#0000ff" stroke-width="4"></line>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0.000000 -30.000000 60.000000 60.000000" width="60.000000mm" height="60.000000mm">
+  <style>text { font-family: arial; }</style>
+  <rect y="-30" width="60" height="60" fill="#0000ff"></rect>
+  <rect y="-7.5" x="9" width="31" height="15" fill="#c0c0c0"></rect>
+  <g transform="translate(11.000000 -6.500000)">
+    <text id="title" y="4" font-size="4">Balanced</text>
+    <use href="#diagram" width="31" height="7" transform="translate(0.000000 6.000000)"></use>
   </g>
-  <g transform="translate(45.000000)">
-    <line x2="30" stroke="#0000ff" stroke-width="4"></line>
-    <line x2="30" y1="30" y2="30" stroke="#0000ff" stroke-width="4"></line>
-  </g>
-  <g transform="translate(-60.000000 -15.000000)">
-    <use href="#xlr-3p-f" width="30" height="30" transform="scale(-1.000000 1.000000)"></use>
-    <use href="#shuko-f" width="30" height="30" y="30" transform="scale(-1.000000 1.000000)"></use>
-  </g>
-  <g transform="translate(90.000000 -15.000000)">
-    <use href="#xlr-3p-m" width="30" height="30" transform="scale(-1.000000 1.000000)"></use>
-    <use href="#shuko-m" width="30" height="30" y="30" transform="scale(-1.000000 1.000000)"></use>
+  <text id="length" y="2.666666666666667" x="58" fill="#ffffff" text-anchor="end" font-weight="70" font-size="8">10m</text>
+  <g transform="translate(1.000000)">
+    <use href="#logo" width="60" height="6" x="-30" y="-6" transform="rotate(90.000000)" fill="#ffffff"></use>
   </g>
   <defs>
-    <svg id="xlr-3p-f" xmlns="http://www.w3.org/2000/svg" viewBox="-120.000000 -120.000000 240.000000 240.000000">
-      <circle r="114" fill="#000000" stroke="#000000" stroke-width="12"></circle>
-      <circle cx="-60" r="24" fill="#ffffff"></circle>
-      <circle cx="60" r="24" fill="#ffffff"></circle>
-      <circle cy="60" r="24" fill="#ffffff"></circle>
+    <svg id="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0.000000 0.000000 850.000000 300.000000">
+      <g id="w">
+        <use href="#parallelogram"></use>
+        <use href="#triangle" transform="translate(125.000000)"></use>
+        <use href="#parallelogram" transform="translate(350.000000)scale(-1.000000 1.000000)"></use>
+      </g>
+      <g id="i" transform="translate(500.000000)">
+        <use href="#parallelogram" transform="scale(-1.000000 1.000000)"></use>
+      </g>
+      <g id="m" transform="translate(500.000000)">
+        <use href="#w" transform="scale(1.000000 -1.000000)translate(0.000000 -300.000000)"></use>
+      </g>
+      <defs>
+        <path id="parallelogram" d="M 0,0 h 100 l 50,300 h -100 Z"></path>
+        <path id="triangle" d="M 0,0 h 100 l -50,300 Z"></path>
+      </defs>
     </svg>
-    <svg id="shuko-f" xmlns="http://www.w3.org/2000/svg" viewBox="-60.000000 -60.000000 120.000000 120.000000">
-      <circle r="114" fill="#ffffff" stroke="#000000" stroke-width="12"></circle>
-      <rect y="-115" x="-15" width="30" height="30"></rect>
-      <rect y="85" x="-15" width="30" height="30"></rect>
-      <circle cx="-55" r="30"></circle>
-      <circle cx="55" r="30"></circle>
-    </svg>
-    <svg id="xlr-3p-m" xmlns="http://www.w3.org/2000/svg" viewBox="-120.000000 -120.000000 240.000000 240.000000">
-      <circle r="114" fill="#ffffff" stroke="#000000" stroke-width="12"></circle>
-      <circle cx="-60" r="24"></circle>
-      <circle cx="60" r="24"></circle>
-      <circle cy="60" r="24"></circle>
-    </svg>
-    <svg id="shuko-m" xmlns="http://www.w3.org/2000/svg" viewBox="-19.000000 -16.000000 38.000000 32.000000">
-      <rect y="-16" width="19" height="32" fill="#000000" stroke="#000000" stroke-width="1"></rect>
-      <rect y="-12.3" x="-19" width="19" height="4.8" fill="#ffffff" stroke="#000000" stroke-width="1"></rect>
-      <rect y="7.5" x="-19" width="19" height="4.8" fill="#ffffff" stroke="#000000" stroke-width="1"></rect>
-      <path d="m19,-16 l4,9 v14 l-4,9 z" stroke="#000000" fill="#000000"></path>
+    <svg id="diagram" xmlns="http://www.w3.org/2000/svg" viewBox="-75.000000 -35.000000 150.000000 70.000000" height="70">
+      <line x1="-30" x2="30" stroke="#000000" stroke-width="4"></line>
+      <line x1="-30" x2="-30" y1="-22" y2="22" stroke="#000000" stroke-width="4"></line>
+      <line x1="30" x2="30" y1="-22" y2="22" stroke="#000000" stroke-width="4"></line>
+      <g transform="translate(-45.000000 -20.000000)">
+        <line x1="-15" x2="15" stroke="#000000" stroke-width="4"></line>
+        <line x1="-15" x2="15" y1="40" y2="40" stroke="#000000" stroke-width="4"></line>
+      </g>
+      <g transform="translate(30.000000 -20.000000)">
+        <line x2="30" stroke="#000000" stroke-width="4"></line>
+        <line x2="30" y1="40" y2="40" stroke="#000000" stroke-width="4"></line>
+      </g>
+      <g transform="translate(-45.000000 -35.000000)">
+        <use href="#xlr-3p-f" width="30" height="30" transform="scale(-1.000000 1.000000)"></use>
+        <use href="#shuko-f" width="30" height="30" y="40" transform="scale(-1.000000 1.000000)"></use>
+      </g>
+      <g transform="translate(75.000000 -35.000000)">
+        <use href="#xlr-3p-m" width="30" height="30" transform="scale(-1.000000 1.000000)"></use>
+        <use href="#shuko-m" width="30" height="30" y="40" transform="scale(-1.000000 1.000000)"></use>
+      </g>
+      <defs>
+        <svg id="xlr-3p-f" xmlns="http://www.w3.org/2000/svg" viewBox="-120.000000 -120.000000 240.000000 240.000000">
+          <circle r="114" fill="#000000" stroke="#000000" stroke-width="12"></circle>
+          <circle cx="-60" r="24" fill="#ffffff"></circle>
+          <circle cx="60" r="24" fill="#ffffff"></circle>
+          <circle cy="60" r="24" fill="#ffffff"></circle>
+        </svg>
+        <svg id="shuko-f" xmlns="http://www.w3.org/2000/svg" viewBox="-21.000000 -21.000000 42.000000 42.000000">
+          <circle r="20" fill="#ffffff" stroke="#000000" stroke-width="2"></circle>
+          <rect y="-20" x="-2.5" width="5" height="5"></rect>
+          <rect y="15" x="-2.5" width="5" height="5"></rect>
+          <circle cx="-9.5" r="5.5"></circle>
+          <circle cx="9.5" r="5.5"></circle>
+        </svg>
+        <svg id="xlr-3p-m" xmlns="http://www.w3.org/2000/svg" viewBox="-120.000000 -120.000000 240.000000 240.000000">
+          <circle r="114" fill="#ffffff" stroke="#000000" stroke-width="12"></circle>
+          <circle cx="-60" r="24"></circle>
+          <circle cx="60" r="24"></circle>
+          <circle cy="60" r="24"></circle>
+        </svg>
+        <svg id="shuko-m" xmlns="http://www.w3.org/2000/svg" viewBox="-19.000000 -16.000000 38.000000 32.000000">
+          <rect y="-16" width="19" height="32" fill="#000000" stroke="#000000" stroke-width="1"></rect>
+          <rect y="-12.3" x="-19" width="19" height="4.8" fill="#ffffff" stroke="#000000" stroke-width="1"></rect>
+          <rect y="7.5" x="-19" width="19" height="4.8" fill="#ffffff" stroke="#000000" stroke-width="1"></rect>
+          <path d="m19,-16 l4,9 v14 l-4,9 z" stroke="#000000" fill="#000000"></path>
+        </svg>
+      </defs>
     </svg>
   </defs>
 </svg>
