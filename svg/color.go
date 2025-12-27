@@ -9,7 +9,7 @@ type Color int
 
 const (
 	White   Color = 0xFFFFFF
-	Green   Color = 0x00FF00
+	Green   Color = 0x008800
 	Red     Color = 0xFF0000
 	Black   Color = 0x0000000
 	Blue    Color = 0x0000FF

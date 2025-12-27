@@ -9,11 +9,11 @@ import (
 func main() {
 	builder := LabelBuilder{
 		TitleFontSize:    4,
-		SubtitleFontSize: 2,
+		SubtitleFontSize: 3,
 		LengthFontSize:   8,
-		LabelHeight:      60,
-		LabelWidth:       60,
-		PropsWidth:       31,
+		LabelHeight:      70,
+		LabelWidth:       70,
+		PropsWidth:       36,
 		LogoWidth:        6,
 		Padding:          2,
 		Connector: ConnectorCfg{
@@ -32,8 +32,10 @@ func main() {
 	}
 
 	xlrCable := Cable{
-		Title:  "Balanced",
-		Length: 10,
+		Title:   "Balanced Combi",
+		MaxAmps: 16,
+		Volt:    230,
+		Length:  1.5,
 		ConnectorsSideA: []ConnectorCount{
 			{
 				Connector: Connector{

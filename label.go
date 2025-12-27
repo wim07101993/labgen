@@ -50,29 +50,29 @@ func (builder *LabelBuilder) BuildLabel(cable Cable) (*svg.Svg, error) {
 	logoHeight := builder.LogoWidth * Logo.ViewBox.Width / Logo.ViewBox.Height
 
 	diagram := builder.BuildCableDiagram(cable.ConnectorsSideA, cable.ConnectorsSideB)
-	diagramHeight := logoHeight - float64(builder.TitleFontSize+builder.SubtitleFontSize) - builder.Padding
+	diagramHeight := logoHeight - float64(builder.TitleFontSize+builder.SubtitleFontSize) - builder.Padding/2 - builder.Padding
 	diagramWidth := diagram.ViewBox.Width / diagram.ViewBox.Height * diagramHeight
 
-	props := []any{
-		titleTxt,
-		&svg.Use{
-			Height: diagramHeight,
-			Width:  diagramWidth,
-			Transform: &svg.Translate{
-				Y: float64(builder.TitleFontSize + builder.SubtitleFontSize),
-			},
-			Href: diagram.Id.Href(),
-		},
-	}
+	props := []any{titleTxt}
 
 	if subTitle != "" {
 		txt := &svg.Text{
 			Id:        "subtitle",
+			Text:      subTitle,
 			FontSize:  builder.SubtitleFontSize,
-			Transform: &svg.Translate{Y: titleTxt.Y + 24},
+			Transform: &svg.Translate{Y: titleTxt.Y + float64(builder.SubtitleFontSize)},
 		}
 		props = append(props, txt)
 	}
+
+	props = append(props, &svg.Use{
+		Height: diagramHeight,
+		Width:  diagramWidth,
+		Transform: &svg.Translate{
+			Y: float64(builder.TitleFontSize+builder.SubtitleFontSize) + builder.Padding/2,
+		},
+		Href: diagram.Id.Href(),
+	})
 
 	return &svg.Svg{
 		NameSpace: svg.Namespace,
@@ -104,10 +104,10 @@ func (builder *LabelBuilder) BuildLabel(cable Cable) (*svg.Svg, error) {
 			&svg.Text{ // LENGTH
 				Id:         "length",
 				Y:          float64(builder.LengthFontSize)/2 - (float64(builder.LengthFontSize) / 6),
-				X:          58,
+				X:          builder.LabelWidth - builder.Padding,
 				Fill:       foreground.Ptr(),
 				TextAnchor: svg.TextAnchorEnd,
-				FontWeight: 70,
+				FontWeight: 700,
 				FontSize:   builder.LengthFontSize,
 				Text:       fmt.Sprintf("%gm", cable.Length),
 			},
