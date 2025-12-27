@@ -14,7 +14,8 @@ func main() {
 		LabelHeight:      60,
 		LabelWidth:       60,
 		PropsWidth:       31,
-		PropsHeight:      15,
+		LogoWidth:        6,
+		Padding:          2,
 		Connector: ConnectorCfg{
 			Width:   30,
 			Height:  30,

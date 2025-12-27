@@ -1,14 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0.000000 -30.000000 60.000000 60.000000" width="60.000000mm" height="60.000000mm">
   <style>text { font-family: arial; }</style>
   <rect y="-30" width="60" height="60" fill="#0000ff"></rect>
-  <rect y="-7.5" x="9" width="31" height="15" fill="#c0c0c0"></rect>
-  <g transform="translate(11.000000 -6.500000)">
+  <rect y="-8.5" x="10" width="31" height="17" fill="#c0c0c0"></rect>
+  <g transform="translate(12.000000 -7.500000)">
     <text id="title" y="4" font-size="4">Balanced</text>
-    <use href="#diagram" width="31" height="7" transform="translate(0.000000 6.000000)"></use>
+    <use href="#diagram" width="19.285714285714285" height="9" transform="translate(0.000000 6.000000)"></use>
   </g>
   <text id="length" y="2.666666666666667" x="58" fill="#ffffff" text-anchor="end" font-weight="70" font-size="8">10m</text>
-  <g transform="translate(1.000000)">
-    <use href="#logo" width="60" height="6" x="-30" y="-6" transform="rotate(90.000000)" fill="#ffffff"></use>
+  <g transform="translate(5.000000)">
+    <use href="#logo" width="17" height="6" x="-8.5" y="-3" transform="rotate(90.000000)" fill="#ffffff"></use>
   </g>
   <defs>
     <svg id="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0.000000 0.000000 850.000000 300.000000">

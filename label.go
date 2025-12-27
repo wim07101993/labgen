@@ -7,15 +7,16 @@ import (
 )
 
 type LabelBuilder struct {
+	LabelHeight      float64
+	LabelWidth       float64
+	LogoWidth        float64
 	TitleFontSize    int
 	SubtitleFontSize int
 	LengthFontSize   int
-	LabelHeight      float64
-	LabelWidth       float64
+	PropsWidth       float64
 	Connector        ConnectorCfg
 	Cable            CableCfg
-	PropsWidth       float64
-	PropsHeight      float64
+	Padding          float64
 }
 
 type ConnectorCfg struct {
@@ -46,15 +47,17 @@ func (builder *LabelBuilder) BuildLabel(cable Cable) (*svg.Svg, error) {
 		Text:     cable.Title,
 	}
 
-	diagram := builder.BuildCableDiagram(cable.ConnectorsSideA, cable.ConnectorsSideB)
+	logoHeight := builder.LogoWidth * Logo.ViewBox.Width / Logo.ViewBox.Height
 
-	const propsLeftPadding = 11
+	diagram := builder.BuildCableDiagram(cable.ConnectorsSideA, cable.ConnectorsSideB)
+	diagramHeight := logoHeight - float64(builder.TitleFontSize+builder.SubtitleFontSize) - builder.Padding
+	diagramWidth := diagram.ViewBox.Width / diagram.ViewBox.Height * diagramHeight
 
 	props := []any{
 		titleTxt,
 		&svg.Use{
-			Width:  builder.PropsWidth,
-			Height: builder.PropsHeight - float64(builder.TitleFontSize+builder.SubtitleFontSize) - 2,
+			Height: diagramHeight,
+			Width:  diagramWidth,
 			Transform: &svg.Translate{
 				Y: float64(builder.TitleFontSize + builder.SubtitleFontSize),
 			},
@@ -85,15 +88,18 @@ func (builder *LabelBuilder) BuildLabel(cable Cable) (*svg.Svg, error) {
 				Fill:   background.Ptr(),
 			},
 			&svg.Rect{ // PROPERTIES BACKGROUND
-				X:      builder.LabelWidth * 3 / 20,
-				Y:      -builder.PropsHeight / 2,
+				X:      builder.Padding*2 + builder.LogoWidth,
+				Y:      -logoHeight / 2,
 				Width:  builder.PropsWidth,
-				Height: builder.PropsHeight,
+				Height: logoHeight,
 				Fill:   svg.Silver.Ptr(),
 			},
 			&svg.G{
-				Transform: &svg.Translate{X: propsLeftPadding, Y: -builder.PropsHeight/2 + 1},
-				Children:  props,
+				Transform: &svg.Translate{
+					X: builder.Padding + builder.LogoWidth + builder.Padding + builder.Padding,
+					Y: -(logoHeight - builder.Padding) / 2,
+				},
+				Children: props,
 			},
 			&svg.Text{ // LENGTH
 				Id:         "length",
@@ -106,14 +112,14 @@ func (builder *LabelBuilder) BuildLabel(cable Cable) (*svg.Svg, error) {
 				Text:       fmt.Sprintf("%gm", cable.Length),
 			},
 			&svg.G{ // LOGO
-				Transform: &svg.Translate{X: 1},
+				Transform: &svg.Translate{X: builder.LogoWidth/2 + builder.Padding},
 				Children: []any{
 					&svg.Use{
 						Href:      fmt.Sprintf("#%s", Logo.Id),
-						Width:     builder.LabelWidth,
-						Height:    builder.LabelHeight / 10,
-						X:         -builder.LabelWidth / 2,
-						Y:         -builder.LabelHeight / 10,
+						Width:     logoHeight,
+						Height:    builder.LogoWidth,
+						X:         -logoHeight / 2,
+						Y:         -builder.LogoWidth / 2,
 						Transform: &svg.Rotate{Degrees: 90},
 						Fill:      foreground.Ptr(),
 					},
