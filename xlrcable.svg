@@ -1,11 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0.000000 -35.000000 70.000000 70.000000" width="70.000000mm" height="70.000000mm">
   <style>text { font-family: arial; }</style>
   <rect y="-35" width="70" height="70" fill="#008800"></rect>
-  <rect y="-8.5" x="10" width="36" height="17" fill="#c0c0c0"></rect>
-  <g transform="translate(12.000000 -7.500000)">
-    <text id="title" y="4" font-size="4">Balanced Combi</text>
-    <text id="subtitle" font-size="3" transform="translate(0.000000 7.000000)">230V 16A</text>
-    <use href="#diagram" width="15" height="7" transform="translate(0.000000 8.000000)"></use>
+  <g>
+    <rect y="-10.5" x="10" width="36" height="21" fill="#c0c0c0"></rect>
+    <g transform="translate(12.000000 -10.500000)">
+      <text id="title" y="5" font-size="4">Balanced Combi</text>
+      <text id="subtitle" font-size="3" transform="translate(0.000000 8.000000)">230V 16A</text>
+      <use href="#diagram" width="21.428571428571427" height="10" transform="translate(0.000000 9.000000)"></use>
+    </g>
   </g>
   <text id="length" y="2.666666666666667" x="68" fill="#ffffff" text-anchor="end" font-weight="700" font-size="8">1.5m</text>
   <g transform="translate(5.000000)">

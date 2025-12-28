@@ -14,6 +14,7 @@ type LabelBuilder struct {
 	SubtitleFontSize int
 	LengthFontSize   int
 	PropsWidth       float64
+	DiagramHeight    float64
 	Connector        ConnectorCfg
 	Cable            CableCfg
 	Padding          float64
@@ -38,41 +39,12 @@ func (builder *LabelBuilder) BuildLabel(cable Cable) (*svg.Svg, error) {
 	}
 	foreground := cable.ForegroundColor()
 
-	subTitle := cable.subTitle()
-
-	titleTxt := &svg.Text{
-		Id:       "title",
-		FontSize: builder.TitleFontSize,
-		Y:        float64(builder.TitleFontSize),
-		Text:     cable.Title,
-	}
-
 	logoHeight := builder.LogoWidth * Logo.ViewBox.Width / Logo.ViewBox.Height
 
-	diagram := builder.BuildCableDiagram(cable.ConnectorsSideA, cable.ConnectorsSideB)
-	diagramHeight := logoHeight - float64(builder.TitleFontSize+builder.SubtitleFontSize) - builder.Padding/2 - builder.Padding
-	diagramWidth := diagram.ViewBox.Width / diagram.ViewBox.Height * diagramHeight
+	defs := &svg.Defs{Defs: []any{Logo}}
 
-	props := []any{titleTxt}
-
-	if subTitle != "" {
-		txt := &svg.Text{
-			Id:        "subtitle",
-			Text:      subTitle,
-			FontSize:  builder.SubtitleFontSize,
-			Transform: &svg.Translate{Y: titleTxt.Y + float64(builder.SubtitleFontSize)},
-		}
-		props = append(props, txt)
-	}
-
-	props = append(props, &svg.Use{
-		Height: diagramHeight,
-		Width:  diagramWidth,
-		Transform: &svg.Translate{
-			Y: float64(builder.TitleFontSize+builder.SubtitleFontSize) + builder.Padding/2,
-		},
-		Href: diagram.Id.Href(),
-	})
+	props, diagramDefs := builder.BuildProps(cable)
+	defs.Defs = append(defs.Defs, diagramDefs...)
 
 	return &svg.Svg{
 		NameSpace: svg.Namespace,
@@ -87,20 +59,7 @@ func (builder *LabelBuilder) BuildLabel(cable Cable) (*svg.Svg, error) {
 				Y:      -builder.LabelHeight / 2,
 				Fill:   background.Ptr(),
 			},
-			&svg.Rect{ // PROPERTIES BACKGROUND
-				X:      builder.Padding*2 + builder.LogoWidth,
-				Y:      -logoHeight / 2,
-				Width:  builder.PropsWidth,
-				Height: logoHeight,
-				Fill:   svg.Silver.Ptr(),
-			},
-			&svg.G{
-				Transform: &svg.Translate{
-					X: builder.Padding + builder.LogoWidth + builder.Padding + builder.Padding,
-					Y: -(logoHeight - builder.Padding) / 2,
-				},
-				Children: props,
-			},
+			props,
 			&svg.Text{ // LENGTH
 				Id:         "length",
 				Y:          float64(builder.LengthFontSize)/2 - (float64(builder.LengthFontSize) / 6),
@@ -125,12 +84,65 @@ func (builder *LabelBuilder) BuildLabel(cable Cable) (*svg.Svg, error) {
 					},
 				},
 			},
-			&svg.Defs{Defs: []any{
-				Logo,
-				diagram,
-			}},
+			defs,
 		},
 	}, nil
+}
+
+func (builder *LabelBuilder) BuildProps(cable Cable) (g *svg.G, defs []any) {
+	subTitle := cable.subTitle()
+
+	y := builder.Padding/2 + float64(builder.TitleFontSize)
+	titleTxt := &svg.Text{
+		Id:       "title",
+		FontSize: builder.TitleFontSize,
+		Y:        y,
+		Text:     cable.Title,
+	}
+	props := []any{titleTxt}
+
+	diagram := builder.BuildCableDiagram(cable.ConnectorsSideA, cable.ConnectorsSideB)
+	diagramWidth := diagram.ViewBox.Width / diagram.ViewBox.Height * builder.DiagramHeight
+
+	if subTitle != "" {
+		y = y + float64(builder.SubtitleFontSize)
+		txt := &svg.Text{
+			Id:        "subtitle",
+			Text:      subTitle,
+			FontSize:  builder.SubtitleFontSize,
+			Transform: &svg.Translate{Y: y},
+		}
+		props = append(props, txt)
+	}
+
+	y = y + builder.Padding/2
+	props = append(props, &svg.Use{
+		Height:    builder.DiagramHeight,
+		Width:     diagramWidth,
+		Transform: &svg.Translate{Y: y},
+		Href:      diagram.Id.Href(),
+	})
+
+	y = y + builder.DiagramHeight + builder.Padding
+
+	return &svg.G{
+		Children: []any{
+			&svg.Rect{ // PROPERTIES BACKGROUND
+				X:      builder.Padding + builder.LogoWidth + builder.Padding,
+				Y:      -y / 2,
+				Width:  builder.PropsWidth,
+				Height: y,
+				Fill:   svg.Silver.Ptr(),
+			},
+			&svg.G{
+				Transform: &svg.Translate{
+					X: builder.Padding + builder.LogoWidth + builder.Padding + builder.Padding,
+					Y: -y / 2,
+				},
+				Children: props,
+			},
+		},
+	}, []any{diagram}
 }
 
 func (builder *LabelBuilder) BuildCableDiagram(a []ConnectorCount, b []ConnectorCount) *svg.Svg {
