@@ -14,7 +14,7 @@ type LabelBuilder struct {
 	SubtitleFontSize int
 	LengthFontSize   int
 	PropsWidth       float64
-	DiagramHeight    float64
+	DiagramWidth     float64
 	Connector        ConnectorCfg
 	Cable            CableCfg
 	Padding          float64
@@ -102,7 +102,7 @@ func (builder *LabelBuilder) BuildProps(cable Cable) (g *svg.G, defs []any) {
 	props := []any{titleTxt}
 
 	diagram := builder.BuildCableDiagram(cable.ConnectorsSideA, cable.ConnectorsSideB)
-	diagramWidth := diagram.ViewBox.Width / diagram.ViewBox.Height * builder.DiagramHeight
+	diagramHeight := diagram.ViewBox.Height / diagram.ViewBox.Width * builder.DiagramWidth
 
 	if subTitle != "" {
 		y = y + float64(builder.SubtitleFontSize)
@@ -117,13 +117,13 @@ func (builder *LabelBuilder) BuildProps(cable Cable) (g *svg.G, defs []any) {
 
 	y = y + builder.Padding/2
 	props = append(props, &svg.Use{
-		Height:    builder.DiagramHeight,
-		Width:     diagramWidth,
+		Height:    diagramHeight,
+		Width:     builder.DiagramWidth,
 		Transform: &svg.Translate{Y: y},
 		Href:      diagram.Id.Href(),
 	})
 
-	y = y + builder.DiagramHeight + builder.Padding
+	y = y + diagramHeight + builder.Padding
 
 	return &svg.G{
 		Children: []any{
