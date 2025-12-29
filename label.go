@@ -166,14 +166,17 @@ func (builder *LabelBuilder) BuildCableDiagram(a []ConnectorCount, b []Connector
 	wiresA := builder.buildWires(a, true)
 	wiresB := builder.buildWires(b, false)
 
-	gA, defsA, heightA := builder.buildConnectors(a)
-	gB, defsB, heightB := builder.buildConnectors(b)
+	connectorsA, defsA, heightA := builder.buildConnectors(a)
+	connectorsB, defsB, heightB := builder.buildConnectors(b)
 
-	gA.Transform = &svg.Translate{
+	countsA := builder.buildConnectorCounts(a, true)
+	countsB := builder.buildConnectorCounts(b, false)
+
+	connectorsA.Transform = &svg.Translate{
 		X: -diagramWidth/2 + builder.Connector.Width,
 		Y: -heightA / 2,
 	}
-	gB.Transform = &svg.Translate{
+	connectorsB.Transform = &svg.Translate{
 		X: diagramWidth / 2,
 		Y: -heightB / 2,
 	}
@@ -187,7 +190,31 @@ func (builder *LabelBuilder) BuildCableDiagram(a []ConnectorCount, b []Connector
 		Y: -(heightB/2 - builder.Connector.Height/2),
 	}
 
+	countsA.Transform = &svg.Translate{
+		X: -diagramWidth/2 + builder.Connector.Width,
+	}
+	countsB.Transform = &svg.Translate{
+		X: diagramWidth/2 - builder.Connector.Width,
+	}
+
 	height := max(heightA, heightB)
+
+	const countHeight float64 = 10
+	// left side is longer and last element has count
+	if len(a) > len(b) {
+		if a[len(a)-1].Count > 1 {
+			height += countHeight
+		}
+		// right side is longer and last element has count
+	} else if len(b) > len(a) {
+		if b[len(b)-1].Count > 1 {
+			height += countHeight
+		}
+		// left and right equally long and last element has count
+	} else if len(a) > 0 && (a[len(a)-1].Count > 1 || b[len(b)-1].Count > 1) {
+		height += countHeight
+	}
+
 	s.Height = fmt.Sprintf("%v", height)
 	s.ViewBox = &svg.ViewBox{
 		MinX:   -diagramWidth / 2,
@@ -197,12 +224,8 @@ func (builder *LabelBuilder) BuildCableDiagram(a []ConnectorCount, b []Connector
 	}
 
 	defs := make([]any, 0, len(defsA)+len(defsB))
-	for _, def := range defsA {
-		defs = append(defs, def)
-	}
-	for _, def := range defsB {
-		defs = append(defs, def)
-	}
+	defs = append(defs, defsA...)
+	defs = append(defs, defsB...)
 
 	splitterA := builder.buildSplitter(cable.X1, heightA)
 	splitterB := builder.buildSplitter(cable.X2, heightB)
@@ -210,7 +233,8 @@ func (builder *LabelBuilder) BuildCableDiagram(a []ConnectorCount, b []Connector
 	s.Children = append(s.Children,
 		splitterA, splitterB,
 		wiresA, wiresB,
-		gA, gB,
+		connectorsA, connectorsB,
+		countsA, countsB,
 		&svg.Defs{Defs: defs},
 	)
 
@@ -218,9 +242,7 @@ func (builder *LabelBuilder) BuildCableDiagram(a []ConnectorCount, b []Connector
 }
 
 func (builder *LabelBuilder) buildWires(cs []ConnectorCount, isLeft bool) *svg.G {
-	g := &svg.G{
-		Children: make([]any, 0, len(cs)*2),
-	}
+	g := &svg.G{Children: make([]any, 0, len(cs)*2)}
 
 	var x1 float64
 	var x2 float64
@@ -263,13 +285,10 @@ func (builder *LabelBuilder) buildConnectors(cs []ConnectorCount) (g *svg.G, def
 		Children: make([]any, len(cs)),
 	}
 
+	height = builder.Connector.Height*float64(len(cs)) + builder.Connector.Padding*float64(len(cs)-1)
+
 	for i, e := range cs {
 		defs[i] = e.Connector.Svg()
-		if i == 0 {
-			height += builder.Connector.Height + builder.Connector.Padding
-		} else {
-			height += builder.Connector.Height
-		}
 		g.Children[i] = &svg.Use{
 			Href:      e.Connector.Svg().Id.Href(),
 			Width:     builder.Connector.Width,
@@ -280,4 +299,25 @@ func (builder *LabelBuilder) buildConnectors(cs []ConnectorCount) (g *svg.G, def
 	}
 
 	return g, defs, height
+}
+
+func (builder *LabelBuilder) buildConnectorCounts(cs []ConnectorCount, isLeft bool) (g *svg.G) {
+	g = &svg.G{}
+
+	for i, e := range cs {
+		if e.Count < 2 {
+			continue
+		}
+		y := float64(i) * (builder.Connector.Height + builder.Connector.Padding)
+		txt := &svg.Text{
+			Y:    y,
+			Text: fmt.Sprintf("%dx", e.Count),
+		}
+		if !isLeft {
+			txt.TextAnchor = svg.TextAnchorEnd
+		}
+		g.Children = append(g.Children, txt)
+	}
+
+	return g
 }

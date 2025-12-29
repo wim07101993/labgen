@@ -23,7 +23,7 @@ func main() {
 			Padding: 10,
 			Cable: CableCfg{
 				Thickness: 4,
-				Length:    15,
+				Length:    20,
 			},
 		},
 		Cable: CableCfg{
@@ -51,6 +51,7 @@ func main() {
 					PoleCount: 3,
 					IsMale:    false,
 				},
+				Count: 3,
 			},
 		},
 		ConnectorsSideB: []ConnectorCount{
