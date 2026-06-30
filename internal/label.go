@@ -1,85 +1,87 @@
-package main
+package internal
 
 import (
 	"fmt"
 
-	"github.com/wim07101993/labgen/svg"
+	"github.com/wim07101993/labgen/internal/parts"
+	svg2 "github.com/wim07101993/labgen/packages/svg"
+	"github.com/wim07101993/labgen/packages/svg_components"
 )
 
 type LabelBuilder struct {
-	LabelHeight      float64
-	LabelWidth       float64
-	LogoWidth        float64
-	TitleFontSize    int
-	SubtitleFontSize int
-	LengthFontSize   int
-	PropsWidth       float64
-	DiagramWidth     float64
-	Connector        ConnectorCfg
-	Cable            CableCfg
-	Padding          float64
+	LabelHeight      float64       `json:"labelHeight,omitempty"`
+	LabelWidth       float64       `json:"labelWidth,omitempty"`
+	LogoWidth        float64       `json:"logoWidth,omitempty"`
+	TitleFontSize    int           `json:"titleFontSize,omitempty"`
+	SubtitleFontSize int           `json:"subtitleFontSize,omitempty"`
+	LengthFontSize   int           `json:"lengthFontSize,omitempty"`
+	PropsWidth       float64       `json:"propsWidth,omitempty"`
+	DiagramWidth     float64       `json:"diagramWidth,omitempty"`
+	Connector        *ConnectorCfg `json:"connector,omitempty"`
+	Cable            *CableCfg     `json:"cable,omitempty"`
+	Padding          float64       `json:"padding,omitempty"`
 }
 
 type ConnectorCfg struct {
-	Width   float64
-	Height  float64
-	Padding float64
-	Cable   CableCfg
+	Width   float64   `json:"width,omitempty"`
+	Height  float64   `json:"height,omitempty"`
+	Padding float64   `json:"padding,omitempty"`
+	Cable   *CableCfg `json:"cable,omitempty"`
 }
 
 type CableCfg struct {
-	Thickness float64
-	Length    float64
+	Thickness float64 `json:"thickness,omitempty"`
+	Length    float64 `json:"length,omitempty"`
 }
 
-func (builder *LabelBuilder) BuildLabel(cable Cable) (*svg.Svg, error) {
+func (builder *LabelBuilder) BuildLabel(cable parts.Cable) (*svg2.Svg, error) {
 	background, err := cable.BackgroundColor()
 	if err != nil {
 		return nil, err
 	}
 	foreground := cable.ForegroundColor()
 
-	logoHeight := builder.LogoWidth * Logo.ViewBox.Width / Logo.ViewBox.Height
+	logoHeight := builder.LogoWidth * svg_components.Logo.ViewBox.Width / svg_components.Logo.ViewBox.Height
 
-	defs := &svg.Defs{Defs: []any{Logo}}
+	defs := &svg2.Defs{Defs: []any{svg_components.Logo}}
 
 	props, diagramDefs := builder.BuildProps(cable)
 	defs.Defs = append(defs.Defs, diagramDefs...)
 
-	return &svg.Svg{
-		NameSpace: svg.Namespace,
-		ViewBox:   &svg.ViewBox{MinY: -builder.LabelHeight / 2, Width: builder.LabelWidth, Height: builder.LabelHeight},
+	return &svg2.Svg{
+		NameSpace: svg2.Namespace,
+		ViewBox:   &svg2.ViewBox{MinY: -builder.LabelHeight / 2, Width: builder.LabelWidth, Height: builder.LabelHeight},
 		Width:     fmt.Sprintf("%fmm", builder.LabelWidth),
 		Height:    fmt.Sprintf("%fmm", builder.LabelHeight),
 		Children: []any{
-			svg.Style{Value: "text { font-family: arial; }"},
-			&svg.Rect{ // BACKGROUND
+			svg2.Style{Value: "text { font-family: arial; }"},
+			&svg2.Rect{ // BACKGROUND
 				Width:  builder.LabelWidth,
 				Height: builder.LabelHeight,
 				Y:      -builder.LabelHeight / 2,
 				Fill:   background.Ptr(),
 			},
 			props,
-			&svg.Text{ // LENGTH
+			&svg2.Text{ // LENGTH
 				Id:         "length",
 				Y:          float64(builder.LengthFontSize)/2 - (float64(builder.LengthFontSize) / 6),
 				X:          builder.LabelWidth - builder.Padding,
 				Fill:       foreground.Ptr(),
-				TextAnchor: svg.TextAnchorEnd,
+				TextAnchor: svg2.TextAnchorEnd,
 				FontWeight: 700,
 				FontSize:   builder.LengthFontSize,
 				Text:       fmt.Sprintf("%gm", cable.Length),
 			},
-			&svg.G{ // LOGO
-				Transform: &svg.Translate{X: builder.LogoWidth/2 + builder.Padding},
+			&svg2.G{ // LOGO
+				Transform: &svg2.Translate{X: builder.LogoWidth/2 + builder.Padding},
 				Children: []any{
-					&svg.Use{
-						Href:      fmt.Sprintf("#%s", Logo.Id),
+					&svg2.Use{
+						Href:      fmt.Sprintf("#%s", svg_components.Logo.Id),
 						Width:     logoHeight,
 						Height:    builder.LogoWidth,
 						X:         -logoHeight / 2,
 						Y:         -builder.LogoWidth / 2,
-						Transform: &svg.Rotate{Degrees: 90},
+						Transform: &svg2.Rotate{Degrees: 90},
 						Fill:      foreground.Ptr(),
 					},
 				},
@@ -89,11 +91,11 @@ func (builder *LabelBuilder) BuildLabel(cable Cable) (*svg.Svg, error) {
 	}, nil
 }
 
-func (builder *LabelBuilder) BuildProps(cable Cable) (g *svg.G, defs []any) {
-	subTitle := cable.subTitle()
+func (builder *LabelBuilder) BuildProps(cable parts.Cable) (g *svg2.G, defs []any) {
+	subTitle := cable.SubTitle()
 
 	y := builder.Padding/2 + float64(builder.TitleFontSize)
-	titleTxt := &svg.Text{
+	titleTxt := &svg2.Text{
 		Id:       "title",
 		FontSize: builder.TitleFontSize,
 		Y:        y,
@@ -106,36 +108,36 @@ func (builder *LabelBuilder) BuildProps(cable Cable) (g *svg.G, defs []any) {
 
 	if subTitle != "" {
 		y = y + float64(builder.SubtitleFontSize)
-		txt := &svg.Text{
+		txt := &svg2.Text{
 			Id:        "subtitle",
 			Text:      subTitle,
 			FontSize:  builder.SubtitleFontSize,
-			Transform: &svg.Translate{Y: y},
+			Transform: &svg2.Translate{Y: y},
 		}
 		props = append(props, txt)
 	}
 
 	y = y + builder.Padding/2
-	props = append(props, &svg.Use{
+	props = append(props, &svg2.Use{
 		Height:    diagramHeight,
 		Width:     builder.DiagramWidth,
-		Transform: &svg.Translate{Y: y},
+		Transform: &svg2.Translate{Y: y},
 		Href:      diagram.Id.Href(),
 	})
 
 	y = y + diagramHeight + builder.Padding
 
-	return &svg.G{
+	return &svg2.G{
 		Children: []any{
-			&svg.Rect{ // PROPERTIES BACKGROUND
+			&svg2.Rect{ // PROPERTIES BACKGROUND
 				X:      builder.Padding + builder.LogoWidth + builder.Padding,
 				Y:      -y / 2,
 				Width:  builder.PropsWidth,
 				Height: y,
-				Fill:   svg.Silver.Ptr(),
+				Fill:   svg2.Silver.Ptr(),
 			},
-			&svg.G{
-				Transform: &svg.Translate{
+			&svg2.G{
+				Transform: &svg2.Translate{
 					X: builder.Padding + builder.LogoWidth + builder.Padding + builder.Padding,
 					Y: -y / 2,
 				},
@@ -145,19 +147,19 @@ func (builder *LabelBuilder) BuildProps(cable Cable) (g *svg.G, defs []any) {
 	}, []any{diagram}
 }
 
-func (builder *LabelBuilder) BuildCableDiagram(a []ConnectorCount, b []ConnectorCount) *svg.Svg {
+func (builder *LabelBuilder) BuildCableDiagram(a []parts.ConnectorCount, b []parts.ConnectorCount) *svg2.Svg {
 	diagramWidth := (builder.Connector.Width+builder.Connector.Cable.Length)*2 + builder.Cable.Length
 
-	cable := &svg.Line{
+	cable := &svg2.Line{
 		X1:          -builder.Cable.Length / 2,
 		X2:          builder.Cable.Length / 2,
-		Stroke:      svg.Black.Ptr(),
+		Stroke:      svg2.Black.Ptr(),
 		StrokeWidth: 4,
 	}
 
-	s := &svg.Svg{
+	s := &svg2.Svg{
 		Id:        "diagram",
-		NameSpace: svg.Namespace,
+		NameSpace: svg2.Namespace,
 		Children: []any{
 			cable,
 		},
@@ -172,28 +174,28 @@ func (builder *LabelBuilder) BuildCableDiagram(a []ConnectorCount, b []Connector
 	countsA := builder.buildConnectorCounts(a, true)
 	countsB := builder.buildConnectorCounts(b, false)
 
-	connectorsA.Transform = &svg.Translate{
+	connectorsA.Transform = &svg2.Translate{
 		X: -diagramWidth/2 + builder.Connector.Width,
 		Y: -heightA / 2,
 	}
-	connectorsB.Transform = &svg.Translate{
+	connectorsB.Transform = &svg2.Translate{
 		X: diagramWidth / 2,
 		Y: -heightB / 2,
 	}
 
-	wiresA.Transform = &svg.Translate{
+	wiresA.Transform = &svg2.Translate{
 		X: -diagramWidth/2 + builder.Connector.Width,
 		Y: -(heightA/2 - builder.Connector.Height/2),
 	}
-	wiresB.Transform = &svg.Translate{
+	wiresB.Transform = &svg2.Translate{
 		X: builder.Cable.Length / 2,
 		Y: -(heightB/2 - builder.Connector.Height/2),
 	}
 
-	countsA.Transform = &svg.Translate{
+	countsA.Transform = &svg2.Translate{
 		X: -diagramWidth/2 + builder.Connector.Width,
 	}
-	countsB.Transform = &svg.Translate{
+	countsB.Transform = &svg2.Translate{
 		X: diagramWidth/2 - builder.Connector.Width,
 	}
 
@@ -216,7 +218,7 @@ func (builder *LabelBuilder) BuildCableDiagram(a []ConnectorCount, b []Connector
 	}
 
 	s.Height = fmt.Sprintf("%v", height)
-	s.ViewBox = &svg.ViewBox{
+	s.ViewBox = &svg2.ViewBox{
 		MinX:   -diagramWidth / 2,
 		MinY:   -height / 2,
 		Width:  diagramWidth,
@@ -235,14 +237,14 @@ func (builder *LabelBuilder) BuildCableDiagram(a []ConnectorCount, b []Connector
 		wiresA, wiresB,
 		connectorsA, connectorsB,
 		countsA, countsB,
-		&svg.Defs{Defs: defs},
+		&svg2.Defs{Defs: defs},
 	)
 
 	return s
 }
 
-func (builder *LabelBuilder) buildWires(cs []ConnectorCount, isLeft bool) *svg.G {
-	g := &svg.G{Children: make([]any, 0, len(cs)*2)}
+func (builder *LabelBuilder) buildWires(cs []parts.ConnectorCount, isLeft bool) *svg2.G {
+	g := &svg2.G{Children: make([]any, 0, len(cs)*2)}
 
 	var x1 float64
 	var x2 float64
@@ -255,12 +257,12 @@ func (builder *LabelBuilder) buildWires(cs []ConnectorCount, isLeft bool) *svg.G
 	}
 	for i := range cs {
 		y := float64(i) * (builder.Connector.Height + builder.Connector.Padding)
-		g.Children = append(g.Children, &svg.Line{
+		g.Children = append(g.Children, &svg2.Line{
 			X1:          x1,
 			X2:          x2,
 			Y1:          y,
 			Y2:          y,
-			Stroke:      svg.Black.Ptr(),
+			Stroke:      svg2.Black.Ptr(),
 			StrokeWidth: builder.Cable.Thickness,
 		})
 	}
@@ -268,20 +270,20 @@ func (builder *LabelBuilder) buildWires(cs []ConnectorCount, isLeft bool) *svg.G
 	return g
 }
 
-func (builder *LabelBuilder) buildSplitter(x float64, connectorsHeight float64) *svg.Line {
-	return &svg.Line{
+func (builder *LabelBuilder) buildSplitter(x float64, connectorsHeight float64) *svg2.Line {
+	return &svg2.Line{
 		X1:          x,
 		X2:          x,
 		Y1:          -(connectorsHeight/2 - builder.Connector.Height/2 + builder.Connector.Cable.Thickness/2),
 		Y2:          connectorsHeight/2 - builder.Connector.Height/2 + builder.Connector.Cable.Thickness/2,
-		Stroke:      svg.Black.Ptr(),
+		Stroke:      svg2.Black.Ptr(),
 		StrokeWidth: 4,
 	}
 }
 
-func (builder *LabelBuilder) buildConnectors(cs []ConnectorCount) (g *svg.G, defs []any, height float64) {
+func (builder *LabelBuilder) buildConnectors(cs []parts.ConnectorCount) (g *svg2.G, defs []any, height float64) {
 	defs = make([]any, len(cs))
-	g = &svg.G{
+	g = &svg2.G{
 		Children: make([]any, len(cs)),
 	}
 
@@ -289,32 +291,32 @@ func (builder *LabelBuilder) buildConnectors(cs []ConnectorCount) (g *svg.G, def
 
 	for i, e := range cs {
 		defs[i] = e.Connector.Svg()
-		g.Children[i] = &svg.Use{
+		g.Children[i] = &svg2.Use{
 			Href:      e.Connector.Svg().Id.Href(),
 			Width:     builder.Connector.Width,
 			Height:    builder.Connector.Height,
 			Y:         float64(i) * (builder.Connector.Height + builder.Connector.Padding),
-			Transform: svg.MirrorX,
+			Transform: svg2.MirrorX,
 		}
 	}
 
 	return g, defs, height
 }
 
-func (builder *LabelBuilder) buildConnectorCounts(cs []ConnectorCount, isLeft bool) (g *svg.G) {
-	g = &svg.G{}
+func (builder *LabelBuilder) buildConnectorCounts(cs []parts.ConnectorCount, isLeft bool) (g *svg2.G) {
+	g = &svg2.G{}
 
 	for i, e := range cs {
 		if e.Count < 2 {
 			continue
 		}
 		y := float64(i) * (builder.Connector.Height + builder.Connector.Padding)
-		txt := &svg.Text{
+		txt := &svg2.Text{
 			Y:    y,
 			Text: fmt.Sprintf("%dx", e.Count),
 		}
 		if !isLeft {
-			txt.TextAnchor = svg.TextAnchorEnd
+			txt.TextAnchor = svg2.TextAnchorEnd
 		}
 		g.Children = append(g.Children, txt)
 	}

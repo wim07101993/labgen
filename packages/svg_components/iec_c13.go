@@ -1,6 +1,8 @@
-package defs
+package svg_components
 
-import "github.com/wim07101993/labgen/svg"
+import (
+	"github.com/wim07101993/labgen/packages/svg"
+)
 
 var IecC13 = buildIecC13()
 

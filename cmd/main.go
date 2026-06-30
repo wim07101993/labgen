@@ -4,10 +4,13 @@ import (
 	_ "embed"
 	"encoding/xml"
 	"os"
+
+	"github.com/wim07101993/labgen/internal"
+	builder2 "github.com/wim07101993/labgen/internal/parts"
 )
 
 func main() {
-	builder := LabelBuilder{
+	builder := internal.LabelBuilder{
 		TitleFontSize:    4,
 		SubtitleFontSize: 3,
 		LengthFontSize:   8,
@@ -17,54 +20,54 @@ func main() {
 		DiagramWidth:     25,
 		LogoWidth:        6,
 		Padding:          2,
-		Connector: ConnectorCfg{
+		Connector: &internal.ConnectorCfg{
 			Width:   30,
 			Height:  30,
 			Padding: 10,
-			Cable: CableCfg{
+			Cable: &internal.CableCfg{
 				Thickness: 4,
 				Length:    20,
 			},
 		},
-		Cable: CableCfg{
+		Cable: &internal.CableCfg{
 			Thickness: 4,
 			Length:    60,
 		},
 	}
 
-	xlrCable := Cable{
+	xlrCable := builder2.Cable{
 		Title:   "Balanced Combi",
 		MaxAmps: 16,
 		Volt:    230,
 		Length:  1.5,
-		ConnectorsSideA: []ConnectorCount{
+		ConnectorsSideA: []builder2.ConnectorCount{
 			{
-				Connector: Connector{
-					Name:      Xlr,
+				Connector: builder2.Connector{
+					Name:      builder2.Xlr,
 					PoleCount: 3,
 					IsMale:    false,
 				},
 			},
 			{
-				Connector: Connector{
-					Name:      Shuko,
+				Connector: builder2.Connector{
+					Name:      builder2.Shuko,
 					PoleCount: 3,
 					IsMale:    false,
 				},
 				Count: 3,
 			},
 		},
-		ConnectorsSideB: []ConnectorCount{
+		ConnectorsSideB: []builder2.ConnectorCount{
 			{
-				Connector: Connector{
-					Name:      Xlr,
+				Connector: builder2.Connector{
+					Name:      builder2.Xlr,
 					PoleCount: 3,
 					IsMale:    true,
 				},
 			},
 			{
-				Connector: Connector{
-					Name:      Shuko,
+				Connector: builder2.Connector{
+					Name:      builder2.Shuko,
 					PoleCount: 3,
 					IsMale:    true,
 				},

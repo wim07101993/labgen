@@ -16,5 +16,159 @@
         "isMale": false
       }
     ]
+  },
+  {
+    "isBalanced": true,
+    "length": 3,
+    "connectorsSideA": [
+      {
+        "name": "xlr",
+        "poleCount": 3,
+        "isMale": true
+      }
+    ],
+    "connectorsSideB": [
+      {
+        "name": "xlr",
+        "poleCount": 3,
+        "isMale": false
+      }
+    ]
+  },
+  {
+    "isBalanced": true,
+    "length": 5,
+    "connectorsSideA": [
+      {
+        "name": "xlr",
+        "poleCount": 3,
+        "isMale": true
+      }
+    ],
+    "connectorsSideB": [
+      {
+        "name": "xlr",
+        "poleCount": 3,
+        "isMale": false
+      }
+    ]
+  },
+  {
+    "isBalanced": true,
+    "length": 10,
+    "connectorsSideA": [
+      {
+        "name": "xlr",
+        "poleCount": 3,
+        "isMale": true
+      }
+    ],
+    "connectorsSideB": [
+      {
+        "name": "xlr",
+        "poleCount": 3,
+        "isMale": false
+      }
+    ]
+  },
+  {
+    "isBalanced": true,
+    "length": 15,
+    "connectorsSideA": [
+      {
+        "name": "xlr",
+        "poleCount": 3,
+        "isMale": true
+      },
+      {
+        "name": "shuko",
+        "poleCount": 3,
+        "isMale": false
+      }
+    ],
+    "connectorsSideB": [
+      {
+        "name": "xlr",
+        "poleCount": 3,
+        "isMale": false
+      },
+      {
+        "name": "shuko",
+        "poleCount": 3,
+        "isMale": true
+      }
+    ]
+  },
+  {
+    "isBalanced": true,
+    "length": 15,
+    "connectorsSideA": [
+      {
+        "name": "xlr",
+        "poleCount": 3,
+        "isMale": true
+      }
+    ],
+    "connectorsSideB": [
+      {
+        "name": "xlr",
+        "poleCount": 3,
+        "isMale": false
+      }
+    ]
+  },
+  {
+    "isBalanced": true,
+    "length": 50,
+    "connectorsSideA": [
+      {
+        "name": "xlr",
+        "poleCount": 3,
+        "isMale": true
+      }
+    ],
+    "connectorsSideB": [
+      {
+        "name": "xlr",
+        "poleCount": 3,
+        "isMale": false
+      }
+    ]
+  },
+  {
+    "isBalanced": true,
+    "length": 10,
+    "connectorsSideA": [
+      {
+        "name": "jack",
+        "poleCount": 2,
+        "isMale": true
+      }
+    ],
+    "connectorsSideB": [
+      {
+        "name": "jack",
+        "poleCount": 2,
+        "isMale": true
+      }
+    ]
+  },
+  {
+    "isBalanced": true,
+    "length": 5,
+    "connectorsSideA": [
+      {
+        "name": "jack",
+        "poleCount": 2,
+        "isMale": true
+      }
+    ],
+    "connectorsSideB": [
+      {
+        "name": "jack",
+        "poleCount": 2,
+        "isMale": true
+      }
+    ]
   }
 ]
